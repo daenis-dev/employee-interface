@@ -13,13 +13,15 @@ export class EmployeeViewComponent implements OnInit{
 
   displayedColumns: string[] = ['firstName', 'lastName', 'emailAddress', 'jobTitle', 'salary', 'actions'];
 
-  dataSource = new MatTableDataSource<any>([
-    {firstName: 'Jim', lastName: 'Halbern', emailAddress: 'jim.halbern@dundermifflin.com', jobTitle: 'Sales', salary: '$95,000.00'},
-    {firstName: 'Dwight', lastName: 'Snoot', emailAddress: 'dwight.snoot@dundermifflin.com', jobTitle: 'Sales', salary: '$80,000.00'}
-  ]);
+  dataSource = new MatTableDataSource<any>();
 
   ngOnInit(): void {
     this.jobTitles = ['Sales', 'Accounting', 'Reception'];
+    this.dataSource = new MatTableDataSource<any>([
+      {firstName: 'Jim', lastName: 'Halbern', emailAddress: 'jim.halbern@dundermifflin.com', jobTitle: 'Sales', salary: '$95,000.00'},
+      {firstName: 'Dwight', lastName: 'Snoot', emailAddress: 'dwight.snoot@dundermifflin.com', jobTitle: 'Sales', salary: '$80,000.00'}
+    ]);
+    // TODO: retrieve list of Employees
   }
 
     // TODO: submit request to server
