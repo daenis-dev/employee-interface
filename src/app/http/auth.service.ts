@@ -2,6 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -11,11 +12,22 @@ export class AuthService {
   tokenKey = 'token';
   tokenExpDateKey = 'token-exp';
 
-  constructor(private http: HttpClient, private snackBar: MatSnackBar) { }
+  constructor(private http: HttpClient, private snackBar: MatSnackBar, private router: Router) { }
 
   isAuthenticated() {
     let tokenExpirationDate: any = localStorage.getItem(this.tokenExpDateKey);
     return localStorage.getItem(this.tokenKey) != null && new Date(tokenExpirationDate).getDate() > new Date().getDate();
+  }
+
+  registerAccountForParams(params: HttpParams) {
+    this.http.post("https://localhost:8080/v1/accounts", null, {params: params})
+    .subscribe({
+      next: () => {
+        this.displaySuccess("Account registered successfully");
+        this.router.navigateByUrl('/');
+      },
+      error: () => this.displayError("Error occurred while registering for an account")
+    });
   }
 
   loginForEmailAndPassword(email: string, password: string) {
@@ -27,14 +39,22 @@ export class AuthService {
           localStorage.setItem(this.tokenKey, response.accessToken);
           let expDate: any = new Date(new Date().setDate(new Date().getDate() + 1));
           localStorage.setItem(this.tokenExpDateKey, expDate);
-          // TODO: Navigate to the employee view (move logic to the component)
+          this.router.navigateByUrl('/');
         }
       },
-      error: () => this.showErrorMessage("Login attempt failed")
+      error: () => this.displayError("Login attempt failed")
     });
   }
 
-  private showErrorMessage(message: string) {
+  private displaySuccess(message: string) {
+    this.snackBar.open(message, 'Close', {
+      horizontalPosition: 'end',
+      verticalPosition: 'top',
+      panelClass: ['mat-snackbar-success']
+    });
+  }
+
+  private displayError(message: string) {
     this.snackBar.open(message, 'Close', {
       horizontalPosition: 'end',
       verticalPosition: 'top',

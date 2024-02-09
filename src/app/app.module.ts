@@ -15,15 +15,22 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { AppRoutingModule } from './app.routing.module';
+import { LoginFormComponent } from './login-form/login-form.component';
+import { HttpClientModule } from '@angular/common/http';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { AccountRegistrationFormComponent } from './account-registration-form/account-registration-form.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     EmployeeFormComponent,
     EmployeeFormButtonComponent,
-    EmployeeViewComponent
+    EmployeeViewComponent,
+    LoginFormComponent,
+    AccountRegistrationFormComponent
   ],
   imports: [
+    HttpClientModule,
     AppRoutingModule,
     BrowserModule,
     FormsModule,
@@ -34,7 +41,8 @@ import { AppRoutingModule } from './app.routing.module';
     MatButtonModule,
     MatDialogModule,
     MatIconModule,
-    MatSelectModule
+    MatSelectModule,
+    MatSnackBarModule
   ],
   providers: [],
   bootstrap: [AppComponent]
