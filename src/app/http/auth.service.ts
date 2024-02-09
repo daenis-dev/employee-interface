@@ -30,7 +30,7 @@ export class AuthService {
           // TODO: Navigate to the employee view (move logic to the component)
         }
       },
-      error: () => this.showErrorMessage("Login attempt failed");
+      error: () => this.showErrorMessage("Login attempt failed")
     });
   }
 
