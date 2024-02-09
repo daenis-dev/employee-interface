@@ -31,7 +31,9 @@ export class AuthService {
   }
 
   loginForEmailAndPassword(email: string, password: string) {
-    this.http.post("https//localhost:8080/v1/login", null, {params: new HttpParams().set("email", email).set("password", password)})
+    console.log('Email to send: ', email);
+    console.log('Password to send: ', password);
+    this.http.post("https://localhost:8080/v1/accounts/login", null, {params: new HttpParams().set("email-address", email).set("password", password)})
     .subscribe({
       next: (data) => {
         let response: any = data;

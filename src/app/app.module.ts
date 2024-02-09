@@ -4,9 +4,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { EmployeeFormComponent } from './employee-form/employee-form.component';
-import { EmployeeFormButtonComponent } from './employee-form-button/employee-form-button.component';
-import { EmployeeViewComponent } from './employee-view/employee-view.component';
+import { EmployeeFormComponent } from './employees/employee-form/employee-form.component';
+import { EmployeeFormButtonComponent } from './employees/employee-form-button/employee-form-button.component';
+import { EmployeeViewComponent } from './employees/employee-view/employee-view.component';
 
 import { MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
@@ -15,10 +15,10 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { AppRoutingModule } from './app.routing.module';
-import { LoginFormComponent } from './login-form/login-form.component';
+import { LoginFormComponent } from './accounts/login-form/login-form.component';
 import { HttpClientModule } from '@angular/common/http';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { AccountRegistrationFormComponent } from './account-registration-form/account-registration-form.component';
+import { AccountRegistrationFormComponent } from './accounts/account-registration-form/account-registration-form.component';
 
 @NgModule({
   declarations: [
