@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
+import { EmployeeService } from '../service/employee.service';
 
 @Component({
   selector: 'app-employee-view',
@@ -15,8 +16,11 @@ export class EmployeeViewComponent implements OnInit{
 
   dataSource = new MatTableDataSource<any>();
 
+  constructor(private employeeService: EmployeeService) {}
+
   ngOnInit(): void {
     this.jobTitles = ['Sales', 'Accounting', 'Reception'];
+    this.dataSource.data = this.employeeService.findAllEmployees();
     this.dataSource = new MatTableDataSource<any>([
       {firstName: 'Jim', lastName: 'Halbern', emailAddress: 'jim.halbern@dundermifflin.com', jobTitle: 'Sales', salary: '$95,000.00'},
       {firstName: 'Dwight', lastName: 'Snoot', emailAddress: 'dwight.snoot@dundermifflin.com', jobTitle: 'Sales', salary: '$80,000.00'}

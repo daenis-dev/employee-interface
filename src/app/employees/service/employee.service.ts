@@ -18,4 +18,8 @@ export class EmployeeService {
     // TODO: create employee
     
   }
+
+  updateEmployee(employee: Employee) {
+    // TODO: Update employee
+  }
 }
