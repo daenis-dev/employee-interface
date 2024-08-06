@@ -14,7 +14,7 @@ export class EmployeeFormButtonComponent {
 
   openCreateForm(): void {
     const dialogRef = this.dialog.open(EmployeeFormComponent, {
-      width: '400px', // Set the width of the dialog
+      width: '500px', // Set the width of the dialog
     });
 
     // Handle dialog close and result if needed
