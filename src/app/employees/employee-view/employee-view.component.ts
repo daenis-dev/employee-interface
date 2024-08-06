@@ -11,19 +11,21 @@ export class EmployeeViewComponent implements OnInit{
   editMode = false;
   editedRow: any = null;
   jobTitles: string[] = [];
+  companies: string[] = [];
 
-  displayedColumns: string[] = ['firstName', 'lastName', 'emailAddress', 'jobTitle', 'salary', 'actions'];
+  displayedColumns: string[] = ['firstName', 'lastName', 'emailAddress', 'jobTitle', 'company', 'salary', 'actions'];
 
   dataSource = new MatTableDataSource<any>();
 
   constructor(private employeeService: EmployeeService) {}
 
   ngOnInit(): void {
-    this.jobTitles = ['Sales', 'Accounting', 'Reception'];
+    this.jobTitles = ['Sales', 'Accounting', 'Reception']; // TODO: retrieve job titles
+    this.companies = ['Company A', 'Company B'];
     this.dataSource.data = this.employeeService.findAllEmployees();
     this.dataSource = new MatTableDataSource<any>([
-      {firstName: 'Jim', lastName: 'Halbern', emailAddress: 'jim.halbern@dundermifflin.com', jobTitle: 'Sales', salary: '$95,000.00'},
-      {firstName: 'Dwight', lastName: 'Snoot', emailAddress: 'dwight.snoot@dundermifflin.com', jobTitle: 'Sales', salary: '$80,000.00'}
+      {firstName: 'Jim', lastName: 'Halbern', emailAddress: 'jim.halbern@dundermifflin.com', jobTitle: 'Sales', company: 'Company A', salary: '$95,000.00'},
+      {firstName: 'Dwight', lastName: 'Snoot', emailAddress: 'dwight.snoot@dundermifflin.com', jobTitle: 'Sales', company: 'Company B', salary: '$80,000.00'}
     ]);
     // TODO: retrieve list of Employees
   }
