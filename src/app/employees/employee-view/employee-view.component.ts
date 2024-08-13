@@ -1,6 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
-import { EmployeeService } from '../service/employee.service';
+import { EmployeeService } from '../services/employee.service';
+import { JobTitleService } from '../services/job-title.service';
+import { CompanyService } from '../services/company.service';
+import { JobTitle } from '../models/job-title';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Company } from '../models/company';
 
 @Component({
   selector: 'app-employee-view',
@@ -10,6 +15,7 @@ import { EmployeeService } from '../service/employee.service';
 export class EmployeeViewComponent implements OnInit{
   editMode = false;
   editedRow: any = null;
+  originalRow: any = null;
   jobTitles: string[] = [];
   companies: string[] = [];
 
@@ -17,39 +23,66 @@ export class EmployeeViewComponent implements OnInit{
 
   dataSource = new MatTableDataSource<any>();
 
-  constructor(private employeeService: EmployeeService) {}
+  constructor(private employeeService: EmployeeService, private jobTitleService: JobTitleService, private companyService: CompanyService, private snackBar: MatSnackBar) {}
 
   ngOnInit(): void {
-    this.jobTitles = ['Sales', 'Accounting', 'Reception']; // TODO: retrieve job titles
-    this.companies = ['Company A', 'Company B'];
-    this.dataSource.data = this.employeeService.findAllEmployees();
-    this.dataSource = new MatTableDataSource<any>([
-      {firstName: 'Jim', lastName: 'Halbern', emailAddress: 'jim.halbern@dundermifflin.com', jobTitle: 'Sales', company: 'Company A', salary: '$95,000.00'},
-      {firstName: 'Dwight', lastName: 'Snoot', emailAddress: 'dwight.snoot@dundermifflin.com', jobTitle: 'Sales', company: 'Company B', salary: '$80,000.00'}
-    ]);
-    // TODO: retrieve list of Employees
+    this.findAllJobTitles();
+    this.findAllCompanies();
+    this.dataSource = this.employeeService.findAllEmployees();
+  }
+  
+  private findAllJobTitles() {
+    this.jobTitleService.findAllJobTitles()
+    .subscribe({
+      next: (response: JobTitle[]) => {
+        this.jobTitles = response.map(jobTitle => jobTitle.name!);
+      },
+      error: () => {
+        this.showErrorMessage('Error occurred while retrieving job titles');
+      }
+    });
   }
 
-    // TODO: submit request to server
+  private findAllCompanies() {
+    this.companyService.findAllCompanies()
+    .subscribe({
+      next: (response: Company[]) => {
+        this.companies = response.map(company => company.name!);
+      },
+      error: () => {
+        this.showErrorMessage('Error occurred while retrieving companies');
+      }
+    });
+  }
+
   edit(row: any) {
     this.editMode = true;
     this.editedRow = row;
-    console.log('Edit: ', JSON.stringify(this.editedRow));
+    this.originalRow = {...row};
   }
 
-  save() {
-    console.log('Saved: ', JSON.stringify(this.editedRow));
+  save(row: any) {
+    this.employeeService.updateEmployee(row);
     this.editMode = false;
   }
 
   cancel() {
+    Object.assign(this.editedRow, this.originalRow);
     this.editMode = false;
-    console.log('Canceled');
   }
 
-    // TODO: submit request to server
   delete(row: any) {
+    this.employeeService.deleteEmployeeById(row.id);
     this.editedRow = row;
-    console.log('Delete: ', JSON.stringify(this.editedRow));
+    const filteredData = this.dataSource.data.filter(employee => employee.id !== row.id);
+    this.dataSource = new MatTableDataSource<any>(filteredData);
+  }
+
+  private showErrorMessage(message: string) {
+    this.snackBar.open(message, 'Close', {
+      horizontalPosition: 'end',
+      verticalPosition: 'top',
+      panelClass: ['mat-snackbar-error']
+    });
   }
 }

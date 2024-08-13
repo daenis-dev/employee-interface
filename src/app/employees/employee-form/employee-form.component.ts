@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms'
-import { EmployeeService } from '../service/employee.service';
-import { Employee } from '../model/employee';
+import { EmployeeService } from '../services/employee.service';
+import { Employee } from '../models/employee';
 
 @Component({
   selector: 'app-employee-form',
