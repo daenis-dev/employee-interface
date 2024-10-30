@@ -11,7 +11,9 @@ import { HttpClient } from '@angular/common/http';
   templateUrl: './employee-view.component.html',
   styleUrls: ['./employee-view.component.css']
 })
-export class EmployeeViewComponent implements OnInit{
+export class EmployeeViewComponent implements OnInit {
+  isSubmitting = false;
+
   editMode = false;
   editedRow: any = null;
   originalRow: any = null;
@@ -41,10 +43,9 @@ export class EmployeeViewComponent implements OnInit{
   }
 
   private findAllEmployees() {
-    this.http.get<any[]>('https://localhost:8080/v1/employees')
-    .subscribe({
-      next: (response: any[]) => {
-        this.dataSource = new MatTableDataSource<any>(response);
+    this.employeeService.findAllEmployees().subscribe({
+      next: (dataSource: MatTableDataSource<any>) => {
+        this.dataSource = dataSource;
       },
       error: () => {
         this.showErrorMessage('Error occurred while retrieving employee data');
@@ -59,20 +60,49 @@ export class EmployeeViewComponent implements OnInit{
   }
 
   save(row: any) {
-    this.employeeService.updateEmployee(row);
-    this.editMode = false;
+    this.isSubmitting = true;
+    this.employeeService.updateEmployee(row).subscribe({
+      next: () => {
+        this.showSuccessMessage('Successfully updated employee');
+        this.editMode = false;
+        this.isSubmitting = false;
+      },
+      error: () => {
+        this.showErrorMessage('Error occurred while updating employee');
+        this.isSubmitting = false;
+      }
+    });
   }
 
   cancel() {
     Object.assign(this.editedRow, this.originalRow);
+    this.originalRow = undefined;
     this.editMode = false;
   }
 
   delete(row: any) {
-    this.employeeService.deleteEmployeeById(row.id);
-    this.editedRow = row;
-    const filteredData = this.dataSource.data.filter(employee => employee.id !== row.id);
-    this.dataSource = new MatTableDataSource<any>(filteredData);
+    this.isSubmitting = true;
+    this.employeeService.deleteEmployeeById(row.id).subscribe({
+      next: () => {
+        this.editedRow = row;
+        const filteredData = this.dataSource.data.filter(employee => employee.id !== row.id);
+        this.dataSource = new MatTableDataSource<any>(filteredData);
+        this.showSuccessMessage('Successfully deleted employee');
+        this.isSubmitting = false;
+      },
+      error: () => {
+        this.showErrorMessage('Error occurred while deleting employee');
+        this.isSubmitting = false;
+      }
+    });
+  }
+
+  private showSuccessMessage(message: string) {
+    this.snackBar.open(message, 'Close', {
+      horizontalPosition: 'end',
+      verticalPosition: 'top',
+      panelClass: ['mat-snackbar-success']
+    });
   }
 
   private showErrorMessage(message: string) {

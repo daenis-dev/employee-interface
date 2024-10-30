@@ -29,14 +29,27 @@
 
 .table-centered {
     width: 100%;
-    max-width: 90vw; /* Constrains the table width to 80% of the viewport */
-    table-layout: fixed; /* Keeps columns fixed and prevents stretching */
-    overflow-wrap: break-word; /* Ensures long content wraps within cells */
+    max-width: 90vw;
+    table-layout: fixed;
+    overflow-wrap: break-word;
+    border-collapse: collapse; /* Ensures borders are joined */
+    border: 1px solid #e0e0e0; /* Adds border to the table */
 }
 
-.mat-cell, .mat-header-cell {
-    overflow-wrap: break-word; /* Prevents cell content from expanding table */
-    white-space: nowrap; /* Optional: keeps cell content in a single line */
+.mat-elevation-z8 {
+    box-shadow: none !important; /* Removes default Angular Material shadow */
+}
+
+.mat-header-cell, .mat-cell {
+    border-bottom: 1px solid #e0e0e0; /* Adds bottom border to each cell */
+    text-align: center;
+    justify-content: center;
+    overflow-wrap: break-word;
+    white-space: nowrap;
+}
+
+.mat-row:last-child .mat-cell {
+    border-bottom: 1px solid #e0e0e0; /* Ensures bottom border on the last row */
 }
 
 .input-field {
