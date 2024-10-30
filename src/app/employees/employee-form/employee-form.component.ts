@@ -1,7 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Inject, Input, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms'
 import { EmployeeService } from '../services/employee.service';
 import { Employee } from '../models/employee';
+import { JobTitle } from '../models/job-title';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-employee-form',
@@ -9,10 +12,17 @@ import { Employee } from '../models/employee';
   styleUrls: ['./employee-form.component.css']
 })
 export class EmployeeFormComponent {
-  form: FormGroup;
   jobTitles: string[] = [];
+  employees: Employee[] = [];
+  @Output() employeesChange = new EventEmitter<Employee[]>();
+  
+  form: FormGroup;
+  isSubmitting = false;
 
-  constructor(private fb: FormBuilder, private employeeService: EmployeeService) {
+  constructor(@Inject(MAT_DIALOG_DATA) public data: { jobTitles: string[], employees: Employee[] }, private fb: FormBuilder, private employeeService: EmployeeService, private snackBar: MatSnackBar, private dialogRef: MatDialogRef<EmployeeFormComponent>) {
+    console.log('Job titles:', this.jobTitles);
+    this.jobTitles = data.jobTitles;
+    this.employees = data.employees;
     this.form = this.fb.group({
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
@@ -22,20 +32,42 @@ export class EmployeeFormComponent {
     });
   }
 
-  // TODO: Call server
-  ngOnInit() {
-    this.jobTitles = ['Sales', 'Accounting', 'Reception'];
-  }
-
   onSubmit() {
     if (this.form.valid) {
-      // TODO: submit request to server
-      console.log('Selected first name: ' + this.form.get('firstName')?.value);
-      console.log('Selected last name: ' + this.form.get('lastName')?.value);
-      console.log('Selected email address: ' + this.form.get('emailAddress')?.value);
-      console.log('Selected job title: ' + this.form.get('jobTitle')?.value);
-      console.log('Selected salary: ' + this.form.get('salary')?.value);
-      this.employeeService.createEmployee(new Employee(0, this.form.get('firstName')?.value, this.form.get('lastName')?.value, this.form.get('emailAddress')?.value, this.form.get('jobTitle')?.value, this.form.get('salary')?.value));
+      this.isSubmitting = true;
+      const employee = new Employee(0, this.form.get('firstName')?.value, this.form.get('lastName')?.value,
+        this.form.get('emailAddress')?.value, this.form.get('jobTitle')?.value, this.form.get('salary')?.value);
+      
+      this.employeeService.createEmployee(employee).subscribe({
+        next: (response: Employee) => {
+          this.employees.push(response);
+          this.employeesChange.emit(this.employees);
+          this.showSuccessMessage('Successfully created the employee');
+          this.isSubmitting = false;
+          this.isSubmitting = false;
+          this.dialogRef.close(this.employees);
+        },
+        error: () => {
+          this.showErrorMessage('Error occurred while creating the employee');
+          this.isSubmitting = false;
+        }
+      });
     }
+  }
+
+  private showSuccessMessage(message: string) {
+    this.snackBar.open(message, 'Close', {
+      horizontalPosition: 'end',
+      verticalPosition: 'top',
+      panelClass: ['mat-snackbar-success']
+    });
+  }
+
+  private showErrorMessage(message: string) {
+    this.snackBar.open(message, 'Close', {
+      horizontalPosition: 'end',
+      verticalPosition: 'top',
+      panelClass: ['mat-snackbar-error']
+    });
   }
 }

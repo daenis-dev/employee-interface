@@ -5,7 +5,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { EmployeeFormComponent } from './employees/employee-form/employee-form.component';
-import { EmployeeFormButtonComponent } from './employees/employee-form-button/employee-form-button.component';
 import { EmployeeViewComponent } from './employees/employee-view/employee-view.component';
 
 import { MatTableModule } from '@angular/material/table';
@@ -24,7 +23,6 @@ import { AccountRegistrationFormComponent } from './accounts/account-registratio
   declarations: [
     AppComponent,
     EmployeeFormComponent,
-    EmployeeFormButtonComponent,
     EmployeeViewComponent,
     LoginFormComponent,
     AccountRegistrationFormComponent

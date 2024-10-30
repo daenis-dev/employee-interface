@@ -11,6 +11,6 @@ export class JobTitleService {
   constructor(private http: HttpClient) { }
 
   findAllJobTitles(): Observable<JobTitle[]> {
-    return this.http.get<JobTitle[]>('https://localhost:8080/v1/job-titles', { headers: new HttpHeaders({'Authorization': 'xyz'})}) // TODO: Include token
+    return this.http.get<JobTitle[]>('https://localhost:8080/v1/job-titles')
   }
 }

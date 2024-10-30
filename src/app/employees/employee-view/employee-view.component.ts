@@ -1,10 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { EmployeeService } from '../services/employee.service';
 import { JobTitleService } from '../services/job-title.service';
 import { JobTitle } from '../models/job-title';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { HttpClient } from '@angular/common/http';
+import { EmployeeFormComponent } from '../employee-form/employee-form.component';
+import { MatDialog } from '@angular/material/dialog';
+import { Employee } from '../models/employee';
 
 @Component({
   selector: 'app-employee-view',
@@ -23,7 +26,7 @@ export class EmployeeViewComponent implements OnInit {
 
   dataSource = new MatTableDataSource<any>();
 
-  constructor(private employeeService: EmployeeService, private jobTitleService: JobTitleService, private snackBar: MatSnackBar, private http: HttpClient) {}
+  constructor(private employeeService: EmployeeService, private jobTitleService: JobTitleService, private snackBar: MatSnackBar, private dialog: MatDialog) {}
 
   ngOnInit(): void {
     this.findAllJobTitles();
@@ -34,7 +37,7 @@ export class EmployeeViewComponent implements OnInit {
     this.jobTitleService.findAllJobTitles()
     .subscribe({
       next: (response: JobTitle[]) => {
-        this.jobTitles = response.map(jobTitle => jobTitle.name!);
+        this.jobTitles = response.map(title => title.name ? title.name : '');
       },
       error: () => {
         this.showErrorMessage('Error occurred while retrieving job titles');
@@ -97,6 +100,22 @@ export class EmployeeViewComponent implements OnInit {
     });
   }
 
+  openCreateForm(): void {
+    const dialogRef = this.dialog.open(EmployeeFormComponent, {
+      width: '500px',
+      data: { 
+        jobTitles: this.jobTitles,
+        employees: this.dataSource.data as Employee[]
+      }
+    });
+
+    dialogRef.afterClosed().subscribe((updatedEmployees: Employee[] | undefined) => {
+      if (updatedEmployees) {
+        this.dataSource.data = updatedEmployees;
+      }
+    });
+  }
+  
   private showSuccessMessage(message: string) {
     this.snackBar.open(message, 'Close', {
       horizontalPosition: 'end',
