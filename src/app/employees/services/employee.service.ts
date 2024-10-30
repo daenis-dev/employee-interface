@@ -12,8 +12,6 @@ export class EmployeeService {
   findAllEmployees(): MatTableDataSource<any> {
     // TODO: retreive all employees as Employee[]
     return new MatTableDataSource<any>([
-      {id: 1, firstName: 'Jim', lastName: 'Halbern', emailAddress: 'jim.halbern@dundermifflin.com', jobTitle: 'Sales', company: 'Company A', salary: '$95,000.00'},
-      {id: 2, firstName: 'Dwight', lastName: 'Snoot', emailAddress: 'dwight.snoot@dundermifflin.com', jobTitle: 'Sales', company: 'Company B', salary: '$80,000.00'}
     ]);
   }
 

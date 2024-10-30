@@ -11,7 +11,6 @@ import { Employee } from '../models/employee';
 export class EmployeeFormComponent {
   form: FormGroup;
   jobTitles: string[] = [];
-  companies: string[] = [];
 
   constructor(private fb: FormBuilder, private employeeService: EmployeeService) {
     this.form = this.fb.group({
@@ -19,14 +18,13 @@ export class EmployeeFormComponent {
       lastName: ['', Validators.required],
       emailAddress: ['', Validators.required],
       jobTitle: ['', Validators.required],
-      company: ['', Validators.required],
       salary: ['', Validators.required]
     });
   }
 
+  // TODO: Call server
   ngOnInit() {
     this.jobTitles = ['Sales', 'Accounting', 'Reception'];
-    this.companies = ['Company A', 'Company B']
   }
 
   onSubmit() {
@@ -36,7 +34,6 @@ export class EmployeeFormComponent {
       console.log('Selected last name: ' + this.form.get('lastName')?.value);
       console.log('Selected email address: ' + this.form.get('emailAddress')?.value);
       console.log('Selected job title: ' + this.form.get('jobTitle')?.value);
-      console.log('Selected company: ' + this.form.get('company')?.value);
       console.log('Selected salary: ' + this.form.get('salary')?.value);
       this.employeeService.createEmployee(new Employee(0, this.form.get('firstName')?.value, this.form.get('lastName')?.value, this.form.get('emailAddress')?.value, this.form.get('jobTitle')?.value, this.form.get('salary')?.value));
     }

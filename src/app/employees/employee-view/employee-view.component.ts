@@ -2,10 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { EmployeeService } from '../services/employee.service';
 import { JobTitleService } from '../services/job-title.service';
-import { CompanyService } from '../services/company.service';
 import { JobTitle } from '../models/job-title';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Company } from '../models/company';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-employee-view',
@@ -17,18 +16,16 @@ export class EmployeeViewComponent implements OnInit{
   editedRow: any = null;
   originalRow: any = null;
   jobTitles: string[] = [];
-  companies: string[] = [];
 
-  displayedColumns: string[] = ['firstName', 'lastName', 'emailAddress', 'jobTitle', 'company', 'salary', 'actions'];
+  displayedColumns: string[] = ['firstName', 'lastName', 'emailAddress', 'jobTitle', 'salary', 'actions'];
 
   dataSource = new MatTableDataSource<any>();
 
-  constructor(private employeeService: EmployeeService, private jobTitleService: JobTitleService, private companyService: CompanyService, private snackBar: MatSnackBar) {}
+  constructor(private employeeService: EmployeeService, private jobTitleService: JobTitleService, private snackBar: MatSnackBar, private http: HttpClient) {}
 
   ngOnInit(): void {
     this.findAllJobTitles();
-    this.findAllCompanies();
-    this.dataSource = this.employeeService.findAllEmployees();
+    this.findAllEmployees();
   }
   
   private findAllJobTitles() {
@@ -43,14 +40,14 @@ export class EmployeeViewComponent implements OnInit{
     });
   }
 
-  private findAllCompanies() {
-    this.companyService.findAllCompanies()
+  private findAllEmployees() {
+    this.http.get<any[]>('https://localhost:8080/v1/employees')
     .subscribe({
-      next: (response: Company[]) => {
-        this.companies = response.map(company => company.name!);
+      next: (response: any[]) => {
+        this.dataSource = new MatTableDataSource<any>(response);
       },
       error: () => {
-        this.showErrorMessage('Error occurred while retrieving companies');
+        this.showErrorMessage('Error occurred while retrieving employee data');
       }
     });
   }

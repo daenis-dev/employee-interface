@@ -17,3 +17,30 @@
     justify-content: center; /* Center horizontally */
     align-items: center; /* Center vertically */
 }
+
+.table-container {
+    display: flex;
+    justify-content: center;
+    padding-left: 5%;
+    padding-right: 5%;
+    overflow: hidden; /* Prevents overflow outside the container */
+    box-sizing: border-box;
+}
+
+.table-centered {
+    width: 100%;
+    max-width: 90vw; /* Constrains the table width to 80% of the viewport */
+    table-layout: fixed; /* Keeps columns fixed and prevents stretching */
+    overflow-wrap: break-word; /* Ensures long content wraps within cells */
+}
+
+.mat-cell, .mat-header-cell {
+    overflow-wrap: break-word; /* Prevents cell content from expanding table */
+    white-space: nowrap; /* Optional: keeps cell content in a single line */
+}
+
+.input-field {
+    width: 100%; /* Ensures input spans full width of cell */
+    box-sizing: border-box; /* Includes padding/borders in width */
+    font-size: 12px;;
+}
