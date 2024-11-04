@@ -41,7 +41,7 @@ export class AuthService {
           localStorage.setItem(this.tokenKey, response.accessToken);
           let expDate: any = new Date(new Date().setDate(new Date().getDate() + 1));
           localStorage.setItem(this.tokenExpDateKey, expDate);
-          this.router.navigateByUrl('/');
+          this.router.navigateByUrl('/employees');
         }
       },
       error: () => this.displayError("Login attempt failed")
@@ -66,6 +66,14 @@ export class AuthService {
 
   logout() {
     localStorage.clear();
-    // TODO: Navigate to the login window (move logic to the component)
+    this.router.navigateByUrl('/');
+  }
+
+  getToken(): string {
+    const token = localStorage.getItem(this.tokenKey);
+    if (token == null) {
+      return '';
+    }
+    return token;
   }
 }

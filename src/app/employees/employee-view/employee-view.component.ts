@@ -7,6 +7,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { EmployeeFormComponent } from '../employee-form/employee-form.component';
 import { MatDialog } from '@angular/material/dialog';
 import { Employee } from '../models/employee';
+import { AuthService } from 'src/app/auth/auth.service';
 
 @Component({
   selector: 'app-employee-view',
@@ -25,7 +26,7 @@ export class EmployeeViewComponent implements OnInit {
 
   dataSource = new MatTableDataSource<any>();
 
-  constructor(private employeeService: EmployeeService, private jobTitleService: JobTitleService, private snackBar: MatSnackBar, private dialog: MatDialog) {}
+  constructor(private employeeService: EmployeeService, private jobTitleService: JobTitleService, private snackBar: MatSnackBar, private dialog: MatDialog, private authService: AuthService) {}
 
   ngOnInit(): void {
     this.findAllJobTitles();
@@ -113,6 +114,10 @@ export class EmployeeViewComponent implements OnInit {
         this.dataSource.data = updatedEmployees;
       }
     });
+  }
+
+  logout() {
+    this.authService.logout();
   }
   
   private showSuccessMessage(message: string) {

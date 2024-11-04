@@ -12,6 +12,9 @@ export class LoginFormComponent {
   loginForm: FormGroup;
 
   constructor(private formBuilder: FormBuilder, private authService: AuthService, private router: Router) {
+    if (this.authService.isAuthenticated()) {
+      this.router.navigateByUrl('/employees');
+    }
     this.loginForm = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
       password:['', Validators.required]
