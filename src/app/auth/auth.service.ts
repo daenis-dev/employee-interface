@@ -24,15 +24,13 @@ export class AuthService {
     .subscribe({
       next: () => {
         this.displaySuccess("Account registered successfully");
-        this.router.navigateByUrl('/');
+        this.router.navigateByUrl('/employees');
       },
       error: () => this.displayError("Error occurred while registering for an account")
     });
   }
 
   loginForEmailAndPassword(email: string, password: string) {
-    console.log('Email to send: ', email);
-    console.log('Password to send: ', password);
     this.http.post("https://localhost:8080/v1/accounts/login", null, {params: new HttpParams().set("email-address", email).set("password", password)})
     .subscribe({
       next: (data) => {

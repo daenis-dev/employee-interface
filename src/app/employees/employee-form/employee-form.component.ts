@@ -20,10 +20,10 @@ export class EmployeeFormComponent {
   isSubmitting = false;
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: { jobTitles: string[], employees: Employee[] }, private fb: FormBuilder, private employeeService: EmployeeService, private snackBar: MatSnackBar, private dialogRef: MatDialogRef<EmployeeFormComponent>) {
-    console.log('Job titles:', this.jobTitles);
     this.jobTitles = data.jobTitles;
     this.employees = data.employees;
     this.form = this.fb.group({
+      id: [''],
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
       emailAddress: ['', Validators.required],
