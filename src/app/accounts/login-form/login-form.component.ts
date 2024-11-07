@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../auth/auth.service';
 import { Router } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
+import { ResetPasswordFormComponent } from '../reset-password-form/reset-password-form.component';
 
 @Component({
   selector: 'app-login-form',
@@ -11,7 +13,9 @@ import { Router } from '@angular/router';
 export class LoginFormComponent {
   loginForm: FormGroup;
 
-  constructor(private formBuilder: FormBuilder, private authService: AuthService, private router: Router) {
+  hidePassword: boolean = true;
+
+  constructor(private formBuilder: FormBuilder, private authService: AuthService, private router: Router, private dialog: MatDialog) {
     if (this.authService.isAuthenticated()) {
       this.router.navigateByUrl('/employees');
     }
@@ -29,5 +33,12 @@ export class LoginFormComponent {
 
   navigateToRegistrationForm() {
     this.router.navigateByUrl('/register');
+  }
+
+  displayResetPasswordForm() {
+    this.dialog.open(ResetPasswordFormComponent, {
+      width: '600px',
+      height: '300px'
+    });
   }
 }

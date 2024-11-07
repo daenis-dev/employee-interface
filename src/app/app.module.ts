@@ -18,6 +18,7 @@ import { LoginFormComponent } from './accounts/login-form/login-form.component';
 import { HttpClientModule } from '@angular/common/http';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { AccountRegistrationFormComponent } from './accounts/account-registration-form/account-registration-form.component';
+import { ResetPasswordFormComponent } from './accounts/reset-password-form/reset-password-form.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { AccountRegistrationFormComponent } from './accounts/account-registratio
     EmployeeFormComponent,
     EmployeeViewComponent,
     LoginFormComponent,
-    AccountRegistrationFormComponent
+    AccountRegistrationFormComponent,
+    ResetPasswordFormComponent
   ],
   imports: [
     HttpClientModule,

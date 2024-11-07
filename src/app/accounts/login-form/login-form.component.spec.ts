@@ -8,6 +8,8 @@ import { Router } from '@angular/router';
 import { LoginFormComponent } from './login-form.component';
 import { of } from 'rxjs';
 import { AuthService } from 'src/app/auth/auth.service';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatIconModule } from '@angular/material/icon';
 
 describe('LoginFormComponent', () => {
   let component: LoginFormComponent;
@@ -27,7 +29,9 @@ describe('LoginFormComponent', () => {
         MatFormFieldModule,
         MatInputModule,
         MatButtonModule,
-        BrowserAnimationsModule
+        BrowserAnimationsModule,
+        MatDialogModule,
+        MatIconModule
       ],
       providers: [
         { provide: AuthService, useValue: authServiceSpy },
